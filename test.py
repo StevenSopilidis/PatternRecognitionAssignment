@@ -1,6 +1,8 @@
 import csv
 import matplotlib.pyplot as plt
 import random
+import perceptron
+import numpy as np
 
 file_path = 'housing.csv'
 
@@ -134,7 +136,51 @@ min_value = -1
 
 # scale using normilization around -1 and 1
 for row in data:
-    for i in range(0, 9):
+    for i in range(0, 10):
         if row[i] == '':
             row[i] = medians[i]
         row[i] = ((row[i] - min_values[i]) / (max_values[i] - min_values[i])) * (max_value - min_value) + min_value
+
+# split the data into 10 folds
+# random.shuffle(data)
+folds = []
+house_prices_per_fold = [] # holds all the prices for each fold
+for i in range(10):
+    folds.append(data[i*len(data)//10 : (i+1)*len(data)//10])
+    prices = [row[8] for row in folds[i]]
+    house_prices_per_fold.append(prices)
+
+# for the perceptron we will cluster the data into two categories
+# 1. Above the median price (1) 
+# 2. Below the median price (0)
+median_price_scaled = ((medians[8] - min_values[8]) / (max_values[8] - min_values[8])) * (max_value - min_value) + min_value
+
+
+# convert the data in 0 and 1 manner
+training_data_per_fold = []
+for row in house_prices_per_fold:
+    # get the price which will be the training data
+    training_data_per_fold.append([0 if data < median_price_scaled else 1 for data in row])
+
+# update fodls by removing the median_house_value
+# from the features
+updated_folds = []
+for fold in folds:
+    updated_fold = []
+    for row in fold:
+        updated_fold.append(row[:8] + [row[9]])
+    updated_folds.append(updated_fold)
+
+# for the first 9 folds train the perceptron algorithm
+model = perceptron.Perceptron(9, 0.01, 160)
+for i in range(9):
+    model.fit(np.array(updated_folds[i]), training_data_per_fold[i])
+
+# calculate the MSE (MEAN SQUARED ERROR)
+# and the MAE (MEAN ABSOLUTE ERROR)
+model_predictions = np.array([model.predict(data) for data in updated_folds[9]])
+actual_prices = np.array(training_data_per_fold[9])
+mse = np.mean((model_predictions - actual_prices) ** 2)
+mae = np.mean(np.abs(model_predictions - actual_prices))
+print("MSE of perceptron algorithm: ", mse)
+print("MAE of perceptron algorithm: ", mae)
