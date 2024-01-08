@@ -160,7 +160,7 @@ median_price_scaled = ((medians[8] - min_values[8]) / (max_values[8] - min_value
 training_data_per_fold = []
 for row in house_prices_per_fold:
     # get the price which will be the training data
-    training_data_per_fold.append([0 if data < median_price_scaled else 1 for data in row])
+    training_data_per_fold.append([-1 if data < median_price_scaled else 1 for data in row])
 
 # update fodls by removing the median_house_value
 # from the features
