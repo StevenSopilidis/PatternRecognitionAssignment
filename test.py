@@ -2,6 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 import random
 import perceptron
+import least_squares
 import numpy as np
 
 file_path = 'housing.csv'
@@ -132,14 +133,15 @@ for row in data:
 
 # max and min values in normilization
 max_value = 1
-min_value = -1
+min_value = 0
 
-# scale using normilization around -1 and 1
+# scale using normilization around min_value and max_value
 for row in data:
     for i in range(0, 10):
         if row[i] == '':
             row[i] = medians[i]
         row[i] = ((row[i] - min_values[i]) / (max_values[i] - min_values[i])) * (max_value - min_value) + min_value
+
 
 # split the data into 10 folds
 # random.shuffle(data)
@@ -171,16 +173,35 @@ for fold in folds:
         updated_fold.append(row[:8] + [row[9]])
     updated_folds.append(updated_fold)
 
-# for the first 9 folds train the perceptron algorithm
-model = perceptron.Perceptron(9, 0.01, 160)
-for i in range(9):
-    model.fit(np.array(updated_folds[i]), training_data_per_fold[i])
+# # for the first 9 folds train the perceptron algorithm
+# model = perceptron.Perceptron(9, 0.01, 160)
+# for i in range(9):
+#     model.fit(np.array(updated_folds[i]), training_data_per_fold[i])
 
-# calculate the MSE (MEAN SQUARED ERROR)
-# and the MAE (MEAN ABSOLUTE ERROR)
-model_predictions = np.array([model.predict(data) for data in updated_folds[9]])
-actual_prices = np.array(training_data_per_fold[9])
-mse = np.mean((model_predictions - actual_prices) ** 2)
-mae = np.mean(np.abs(model_predictions - actual_prices))
-print("MSE of perceptron algorithm: ", mse)
-print("MAE of perceptron algorithm: ", mae)
+# # calculate the MSE (MEAN SQUARED ERROR)
+# # and the MAE (MEAN ABSOLUTE ERROR)
+# model_predictions = np.array([model.predict(data) for data in updated_folds[9]])
+# actual_prices = np.array(training_data_per_fold[9])
+# mse_perceptron = np.mean((model_predictions - actual_prices) ** 2)
+# mae_perceptron = np.mean(np.abs(model_predictions - actual_prices))
+# print("MSE of perceptron algorithm: ", mse)
+# print("MAE of perceptron algorithm: ", mae)
+
+# make predictions using Least Squares algorithm
+# need to scale data between 0 and 1 else we get but results
+# coefficients = []
+# for i in range(9):
+#     prices_per_fold = []
+#     coefficients.append(least_squares.LeastSquares(updated_folds[i], house_prices_per_fold[i]))
+
+# avg_coefficients = np.mean(coefficients, axis=0)
+
+# new_data = np.array(updated_folds[9])
+# new_data_with_intercept = np.column_stack((np.ones(len(new_data)), new_data))
+
+# predictions = np.dot(new_data_with_intercept, avg_coefficients)
+# actual_prices = [row[8] for row in folds[9]]
+# mse_least_squares = np.mean((predictions - actual_prices) ** 2)
+# mae_least_squares = np.mean(np.abs(predictions - actual_prices))
+# print("MSE of least squares algorithm: ", mse_least_squares)
+# print("MAE of least squares algorithm: ", mae_least_squares)
