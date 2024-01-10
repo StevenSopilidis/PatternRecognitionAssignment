@@ -16,3 +16,22 @@ def LeastSquares(X, Y):
     coff = np.dot(x_t_x_inv, x_t_y)
 
     return coff
+
+def RunLeastSquares(folds, updated_folds, house_prices_per_fold):
+    # make predictions using Least Squares algorithm
+    coefficients = []
+    for i in range(9):
+        prices_per_fold = []
+        coefficients.append(LeastSquares(updated_folds[i], house_prices_per_fold[i]))
+
+    avg_coefficients = np.mean(coefficients, axis=0)
+
+    new_data = np.array(updated_folds[9])
+    new_data_with_intercept = np.column_stack((np.ones(len(new_data)), new_data))
+
+    predictions = np.dot(new_data_with_intercept, avg_coefficients)
+    actual_prices = [row[8] for row in folds[9]]
+    mse_least_squares = np.mean((predictions - actual_prices) ** 2)
+    mae_least_squares = np.mean(np.abs(predictions - actual_prices))
+    print("MSE of least squares algorithm: ", mse_least_squares)
+    print("MAE of least squares algorithm: ", mae_least_squares)
