@@ -79,7 +79,7 @@ def PlotData(data):
     plt.grid(True)
     plt.show()
 
-def NormializeData(data, min, max, min_values, max_values, medians):
+def NormalizeData(data, min, max, min_values, max_values, medians):
     for row in data:
         for i in range(0, 10):
             if row[i] == '':

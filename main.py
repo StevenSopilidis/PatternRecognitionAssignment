@@ -1,6 +1,7 @@
 import csv
 import random
 import perceptron
+import mlp
 import least_squares
 import numpy as np
 import utils
@@ -66,7 +67,7 @@ max_value = 1
 min_value = 0
 
 # scale using normilization around min_value and max_value
-utils.NormializeData(data, min_value, max_value, min_values, max_values, medians)
+utils.NormalizeData(data, min_value, max_value, min_values, max_values, medians)
 
 folds, house_prices_per_fold = utils.SplitDataIntoFolds(data)
 
