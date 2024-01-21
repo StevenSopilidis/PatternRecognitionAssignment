@@ -3,14 +3,23 @@ import random
 
 
 def PlotHistograms(columns,column_names, min_values, max_values):
-    for i, column in enumerate(columns):
-        plt.hist(column, bins=500, edgecolor='black')
-        plt.xlabel(column_names[i])
-        plt.xlim(min_values[i], max_values[i])
-        plt.ylabel('Frequency')
-        plt.title("Frequency Histogram of " + column_names[i])
-        plt.grid(True)    
-        plt.show()
+    fig, axs = plt.subplots(3, 3, figsize=(12, 12))
+
+    # Iterate through columns
+    for i, (column, name, min_val, max_val) in enumerate(zip(columns, column_names, min_values, max_values)):
+        row_index = i // 3
+        col_index = i % 3
+
+        # Create histogram for each column
+        axs[row_index, col_index].hist(column, bins=20, edgecolor='black')
+        axs[row_index, col_index].set_title(f"Histogram of {name}")
+        axs[row_index, col_index].set_xlabel(name)
+        axs[row_index, col_index].set_ylabel('Frequency')
+        axs[row_index, col_index].set_xlim(min_val, max_val)
+
+    plt.tight_layout()
+    plt.show()
+
 
 def PlotHistogramsForOceanProximity(ocean_proximity_values):
     plt.hist(ocean_proximity_values, bins=4, edgecolor='black')
