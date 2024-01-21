@@ -62,8 +62,8 @@ def PlotData(data):
 
     plt.scatter(median_house_value[:100], long[:100], cmap='viridis')
     plt.xlabel("median_house_value")
-    plt.ylabel("longitute")
-    plt.title("Median_house_value & Longitute")
+    plt.ylabel("Longitude")
+    plt.title("Median_house_value & Longitude")
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -81,9 +81,9 @@ def PlotData(data):
     # where median_house_value is represented via colors
     # Lighter colors represent higher values, while darker colors represent lower values     
     plt.scatter(long[:100], lat[:100], c=median_house_value[:100],cmap='viridis')
-    plt.xlabel("longitute")
+    plt.xlabel("Longitude")
     plt.ylabel("latitude")
-    plt.title("Longitute - Latitude - Median_house_value")
+    plt.title("Longitude - Latitude - Median_house_value")
     plt.legend()
     plt.grid(True)
     plt.show()

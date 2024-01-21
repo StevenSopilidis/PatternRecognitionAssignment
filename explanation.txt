@@ -6,9 +6,9 @@ feature χρησιμοποιώντας one_hot_vector encoding.
 Μετα, κανουμε plot τα histograms καθως και συνδιασμους δεδομενων οπως 
 1) housing_median_age-median_house_value
 2) total_rooms-median_house_value
-3) Median_house_value-Longitute
+3) Median_house_value-Longitude
 4) Median_house_value-Latitude
-5) Longitute-Latitude-Median_house_value
+5) Longitude-Latitude-Median_house_value
 Τελος, κανονικοποιουμε τα δεδομενα αναμεσα στο min & max (επιλεξαμε 0 και 1),
 σπαμε τα δεδομενα σε 10 folds, απο αυτα στα 9 που θα χρησιμοποιηθουν για training
 αφαιρουμε το median_house_value attribute και τελος καλουμε τα 3 μοντελα περνωντας
