@@ -60,6 +60,19 @@ def RunMLP(updated_folds, house_prices_per_fold, folds):
     for i in range(0,9):
         network.fit(updated_folds[i], house_prices_per_fold[i])
 
+    sum_mse = 0
+    sum_mae = 0
+    for i in range(9):
+        model_predictions = np.array([network.predict(data) for data in updated_folds[i]])
+        actual_prices = np.array(house_prices_per_fold[i])
+
+        sum_mse += np.mean((model_predictions - actual_prices) ** 2)
+        sum_mae += np.mean(np.abs(model_predictions - actual_prices))
+
+    print("Training MSE of perceptron algorithm: ", sum_mse/10)
+    print("Training MAE of perceptron algorithm: ", sum_mae/10)
+
+
     model_predictions = np.array([network.predict(data) for data in updated_folds[9]])
     actual_prices = np.array(folds[9])
     mse = np.mean((model_predictions - actual_prices) ** 2)

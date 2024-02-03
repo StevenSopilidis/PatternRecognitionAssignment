@@ -48,23 +48,24 @@ medians = [sorted(col)[len(col) // 2] if len(col) % 2 != 0 else
            for col in columns]
 
 
-# encoding ocean_proximity using one_hot_vector encoding
+# encode ocean_proximity 
 # 0 for first 1 for second etc
 for row in data:
     row[9] = ocean_proximity_types.index(row[9])
 
 
 # ploat histograms for all data except ocean proximity
-# using non scaled data for the representation
-utils.PlotHistograms(columns, column_names, min_values, max_values)
+# # using non scaled data for the representation
+# utils.PlotHistograms(columns, column_names, min_values, max_values)
 
-# plot histogram for ocean
-ocean_proximity_values = [row[9] for row in data]
-utils.PlotHistogramsForOceanProximity(ocean_proximity_values)
+# # plot histogram for ocean
+# ocean_proximity_values = [row[9] for row in data]
+# utils.PlotHistogramsForOceanProximity(ocean_proximity_values)
 
-utils.PlotData(data)
+# utils.PlotData(data)
+
 max_value = 1
-min_value = 0
+min_value = -1
 
 # scale using normilization around min_value and max_value
 utils.NormalizeData(data, min_value, max_value, min_values, max_values, medians)
@@ -73,8 +74,8 @@ folds, house_prices_per_fold = utils.SplitDataIntoFolds(data)
 
 updated_folds = utils.RemovePricesForFolds(folds)
 
-perceptron.RunPerceptron(updated_folds, house_prices_per_fold, medians, min_value, max_value, min_values, max_values)
+# perceptron.RunPerceptron(updated_folds, house_prices_per_fold, medians, min_value, max_value, min_values, max_values)
 
-least_squares.RunLeastSquares(folds, updated_folds, house_prices_per_fold)
+# least_squares.RunLeastSquares(folds, updated_folds, house_prices_per_fold)
 
 mlp.RunMLP(updated_folds, house_prices_per_fold, folds)

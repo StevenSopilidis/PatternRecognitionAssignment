@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import random
+import pandas as pd
 
 
 def PlotHistograms(columns,column_names, min_values, max_values):
@@ -31,69 +32,30 @@ def PlotHistogramsForOceanProximity(ocean_proximity_values):
     plt.show()
 
 def PlotData(data):
-    housing_median_age = [row[2] for row in data]
-    median_house_value = [row[8] for row in data]
-    total_rooms = [row[3] for row in data]
-    long = [row[0] for row in data]
-    lat = [row[1] for row in data]
+    column_names = ["longitude","latitude","housing_median_age","total_rooms","total_bedrooms","population","households","median_income","median_house_value","ocean_proximity"]
+    data_df = pd.DataFrame(data, columns=column_names)
 
-    # shuffle data
-    random.shuffle(housing_median_age)
-    random.shuffle(median_house_value)
-    random.shuffle(long)
-    random.shuffle(lat)
-
-
-    plt.scatter(housing_median_age[:100], median_house_value[:100], cmap='viridis')
-    plt.xlabel("housing_median_age")
-    plt.ylabel("median_house_value")
-    plt.title("Housing_median_age & Median_house_value")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-    plt.scatter(total_rooms[:100], median_house_value[:100], cmap='viridis')
-    plt.xlabel("total_rooms")
-    plt.ylabel("median_house_value")
-    plt.title("Total_rooms & Median_house_value")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-    plt.scatter(median_house_value[:100], long[:100], cmap='viridis')
-    plt.xlabel("median_house_value")
-    plt.ylabel("Longitude")
-    plt.title("Median_house_value & Longitude")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-    plt.scatter(median_house_value[:100], lat[:100], cmap='viridis')
-    plt.xlabel("median_house_value")
-    plt.ylabel("latitude")
-    plt.title("Median_house_value & Latitude")
-    plt.legend()
-    plt.grid(True)
+    # print the map of california and on top of it color for median_house_value
+    # and opacity of dots for the population
+    data_df.plot(kind="scatter", x="longitude", y="latitude", grid=True,
+             s=data_df["population"] / 100, label="population",
+             c="median_house_value", cmap="jet", colorbar=True,
+             legend=True, sharex=False, figsize=(10, 7))
+    
     plt.show()
 
 
-    # represent long-lat-median_house_value
-    # where median_house_value is represented via colors
-    # Lighter colors represent higher values, while darker colors represent lower values     
-    plt.scatter(long[:100], lat[:100], c=median_house_value[:100],cmap='viridis')
-    plt.xlabel("Longitude")
-    plt.ylabel("latitude")
-    plt.title("Longitude - Latitude - Median_house_value")
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    
 
 def NormalizeData(data, min, max, min_values, max_values, medians):
     for row in data:
         for i in range(0, 10):
             if row[i] == '':
                 row[i] = medians[i]
-            row[i] = ((row[i] - min_values[i]) / (max_values[i] - min_values[i])) * (max - min) + min
+            # we dont want to scale the last column which is the 
+            # categorical argument OCEAN_PROXIMITY
+            if i != 9:
+                row[i] = ((row[i] - min_values[i]) / (max_values[i] - min_values[i])) * (max - min) + min
 
 # returns folds + prices array for each fold
 def SplitDataIntoFolds(data):
