@@ -59,8 +59,8 @@ def RunPerceptron(folds, house_prices_per_fold, medians, min_value, max_value, m
         sum_mse += np.mean((model_predictions - actual_prices) ** 2)
         sum_mae += np.mean(np.abs(model_predictions - actual_prices))
 
-    print("Training MSE of perceptron algorithm: ", sum_mse/10)
-    print("Training MAE of perceptron algorithm: ", sum_mae/10)
+    print("Training MSE of perceptron algorithm: ", sum_mse/9)
+    print("Training MAE of perceptron algorithm: ", sum_mae/9)
 
     # calculate the MSE (MEAN SQUARED ERROR)
     # and the MAE (MEAN ABSOLUTE ERROR)

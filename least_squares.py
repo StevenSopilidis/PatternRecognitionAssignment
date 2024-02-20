@@ -40,8 +40,8 @@ def RunLeastSquares(folds, updated_folds, house_prices_per_fold):
         sum_mse += np.mean((model_predictions - actual_prices) ** 2)
         sum_mae += np.mean(np.abs(model_predictions - actual_prices))
 
-    print("Training MSE of Least Squares: ", sum_mse/10)
-    print("Training MAE of Least Squares: ", sum_mae/10)
+    print("Training MSE of Least Squares: ", sum_mse/9)
+    print("Training MAE of Least Squares: ", sum_mae/9)
 
 
     predictions = np.dot(new_data_with_intercept, avg_coefficients)
